@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Angel! 🎂</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            background: #000;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+        
+        /* Scene containers */
+        .scene {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scene.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Fireworks Canvas */
+        #fireworksCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Glowing Text */
+        .glow-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            color: #ff69b4;
+            text-align: center;
+            z-index: 10;
+            opacity: 0;
+            animation: fadeInScale 2s ease-out forwards;
+            text-shadow: 
+                0 0 10px #ff69b4,
+                0 0 20px #ff69b4,
+                0 0 40px #ff1493,
+                0 0 80px #ff1493;
+            animation-delay: 1s;
+        }
+        
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Teddy Bear Scene */
+        #teddyScene {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 100%);
+        }
+        
+        /* CSS Teddy Bear */
+        .teddy-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounceIn 1s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .teddy-head {
+            width: 140px;
+            height: 130px;
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            border-radius: 50%;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .teddy-ear {
+            width: 50px;
+            height: 50px;
+            background: #8B4513;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            border: 3px solid #654321;
+        }
+        
+        .teddy-ear.left { left: -10px; }
+        .teddy-ear.right { right: -10px; }
+        
+        .teddy-ear-inner {
+            width: 30px;
+            height: 30px;
+            background: #DEB887;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .teddy-eye {
+            width: 20px;
+            height: 25px;
+            background: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 40px;
+            animation: blink 4s infinite;
+        }
+        
+        .teddy-eye.left { left: 35px; }
+        .teddy-eye.right { right: 35px; }
+        
+        .teddy-eye::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        
+        @keyframes blink {
+            0%, 96%, 100% { transform: scaleY(1); }
+            98% { transform: scaleY(0.1); }
+        }
+        
+        .teddy-snout {
+            width: 60px;
+            height: 45px;
+            background: #DEB887;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .teddy-nose {
+            width: 25px;
+            height: 18px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .teddy-mouth {
+            width: 30px;
+            height: 15px;
+            border: 3px solid #333;
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .teddy-body {
+            width: 180px;
+            height: 200px;
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            border-radius: 60px 60px 50px 50px;
+            margin-top: -20px;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .teddy-belly {
+            width: 100px;
+            height: 120px;
+            background: #DEB887;
+            border-radius: 50%;
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .teddy-arm {
+            width: 60px;
+            height: 100px;
+            background: #8B4513;
+            border-radius: 30px;
+            position: absolute;
+            top: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .teddy-arm.left { left: -20px; transform-origin: top right; }
+        .teddy-arm.right { right: -20px; transform-origin: top left; }
+        
+        .teddy-leg {
+            width: 70px;
+            height: 80px;
+            background: #8B4513;
+            border-radius: 35px;
+            position: absolute;
+            bottom: -30px;
+        }
+        
+        .teddy-leg.left { left: 10px; }
+        .teddy-leg.right { right: 10px; }
+        
+        .teddy-foot {
+            width: 50px;
+            height: 40px;
+            background: #DEB887;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Angry/Sitting Teddy State */
+        .teddy-container.angry .teddy-head {
+            transform: rotate(-15deg);
+            transition: transform 0.5s;
+        }
+        
+        .teddy-container.angry .teddy-arm.left {
+            transform: rotate(-30deg);
+        }
+        
+        .teddy-container.angry .teddy-arm.right {
+            transform: rotate(30deg);
+        }
+        
+        .teddy-container.sitting {
+            transform: translateY(50px);
+        }
+        
+        /* Birthday Cake */
+        .cake-container {
+            position: absolute;
+            bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideUp 1s ease-out 0.5s both;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .cake {
+            width: 200px;
+            height: 150px;
+            position: relative;
+        }
+        
+        .cake-base {
+            width: 200px;
+            height: 80px;
+            background: linear-gradient(180deg, #f4a460 0%, #d2691e 100%);
+            border-radius: 10px;
+            position: absolute;
+            bottom: 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .cake-middle {
+            width: 160px;
+            height: 50px;
+            background: linear-gradient(180deg, #ffb6c1 0%, #ff69b4 100%);
+            border-radius: 8px;
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+        }
+        
+        .cake-top {
+            width: 120px;
+            height: 40px;
+            background: linear-gradient(180deg, #fff8dc 0%, #f5deb3 100%);
+            border-radius: 8px;
+            position: absolute;
+            bottom: 130px;
+            left: 40px;
+        }
+        
+        .frosting {
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            background: repeating-radial-gradient(circle at 10px 10px, #fff, #fff 8px, transparent 8px, transparent 16px);
+            top: -10px;
+        }
+        
+        .candle {
+            width: 10px;
+            height: 40px;
+            background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+        
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: radial-gradient(ellipse at center, #ffd700 0%, #ff8c00 50%, transparent 70%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 20px #ff8c00;
+        }
+        
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(1.1) rotate(2deg); }
+        }
+        
+        .cake-cut {
+            position: absolute;
+            width: 2px;
+            height: 150px;
+            background: #8b4513;
+            left: 50%;
+            top: 0;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.5s;
+        }
+        
+        .cake-container.cut .cake-cut {
+            transform: scaleY(1);
+        }
+        
+        .cake-container.cut .flame {
+            display: none;
+        }
+        
+        /* Speech Bubble */
+        .speech-bubble {
+            position: absolute;
+            top: -120px;
+            right: -150px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-width: 250px;
+            font-size: 1rem;
+            color: #333;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        
+        .speech-bubble.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .btn-container.show {
+            opacity: 1;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .btn-yes {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255,20,147,0.4);
+        }
+        
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(255,20,147,0.6);
+        }
+        
+        .btn-no {
+            background: #ddd;
+            color: #666;
+        }
+        
+        .btn-no:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .cut-btn {
+            background: linear-gradient(135deg, #ff8c00, #ff6347);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1rem;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .cut-btn.show {
+            opacity: 1;
+        }
+        
+        /* Quiz Scene */
+        #quizScene {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .quiz-container {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .quiz-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #764ba2;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .question.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        .option:hover {
+            background: #e0e0e0;
+            transform: translateX(10px);
+        }
+        
+        .option.selected {
+            background: #ffe0f0;
+            border-color: #ff69b4;
+        }
+        
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .quiz-btn {
+            padding: 12px 30px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .quiz-btn:hover {
+            background: #5a3a8a;
+            transform: scale(1.05);
+        }
+        
+        .quiz-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            text-align: center;
+        }
+        
+        .results-screen.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .score-display {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #764ba2;
+            margin: 20px 0;
+        }
+        
+        .answer-review {
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .answer-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+        }
+        
+        .answer-item.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .answer-item.wrong {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Maze Game */
+        #mazeScene {
+            background: #1a1a2e;
+            position: relative;
+        }
+        
+        .maze-container {
+            position: relative;
+            width: 90vw;
+            height: 80vh;
+            background: #16213e;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        
+        .maze-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e94560;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            z-index: 10;
+        }
+        
+        .maze-player {
+            width: 30px;
+            height: 30px;
+            background: #ff69b4;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 5;
+            transition: all 0.1s;
+            box-shadow: 0 0 20px #ff69b4;
+        }
+        
+        .maze-gift {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            font-size: 30px;
+            z-index: 4;
+            transition: all 0.3s;
+            cursor: pointer;
+            filter: drop-shadow(0 0 10px gold);
+        }
+        
+        .maze-wall {
+            position: absolute;
+            background: #0f3460;
+            border-radius: 5px;
+        }
+        
+        .maze-comment {
+            position: absolute;
+            bottom: 100px;
+            right: 50px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            color: #333;
+            font-size: 1.1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 20;
+        }
+        
+        .maze-comment::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 30px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        
+        .maze-comment.show {
+            opacity: 1;
+        }
+        
+        .fail-counter {
+            position: absolute;
+            top: 80px;
+            right: 30px;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        /* Privilege Card */
+        #cardScene {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .privilege-card {
+            width: 90%;
+            max-width: 500px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.2),
+                inset 0 0 0 10px rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #d63031;
+            animation: cardFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        
+        .privilege-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.1) 10px,
+                rgba(255,255,255,0.1) 20px
+            );
+            animation: shine 10s linear infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .card-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: #d63031;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-content {
+            font-size: 1.2rem;
+            color: #2d3436;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #d63031;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d63031;
+            font-weight: bold;
+            transform: rotate(-15deg);
+            opacity: 0.8;
+        }
+        
+        .wishes-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-wish {
+            position: absolute;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #e84393;
+            opacity: 0;
+            animation: floatUp 4s ease-out forwards;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes floatUp {
+            0% { 
+                opacity: 0; 
+                transform: translateY(100vh) rotate(0deg) scale(0.5); 
+            }
+            20% { opacity: 1; }
+            100% { 
+                opacity: 0; 
+                transform: translateY(-100px) rotate(10deg) scale(1); 
+            }
+        }
+        
+        .claim-btn {
+            background: #d63031;
+            color: white;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 20px rgba(214,48,49,0.4);
+        }
+        
+        .claim-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(214,48,49,0.6);
+        }
+        
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+        
+        .fade-transition {
+            transition: opacity 0.5s;
+        }
+        
+        /* Hearts Animation */
+        .heart {
+            position: absolute;
+            color: #ff69b4;
+            font-size: 20px;
+            animation: heartFloat 4s ease-in infinite;
+            opacity: 0;
+        }
+        
+        @keyframes heartFloat {
+            0% { opacity: 1; transform: translateY(0) scale(0); }
+            50% { opacity: 1; transform: translateY(-50vh) scale(1); }
+            100% { opacity: 0; transform: translateY(-100vh) scale(0.5); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scene 1: Fireworks -->
+    <div id="fireworksScene" class="scene active">
+        <canvas id="fireworksCanvas"></canvas>
+        <h1 class="glow-text">Happy Birthday,<br>My Angel! 💖</h1>
+    </div>
+
+    <!-- Scene 2: Teddy Bear -->
+    <div id="teddyScene" class="scene">
+        <div class="teddy-container" id="teddy">
+            <div class="teddy-head">
+                <div class="teddy-ear left"><div class="teddy-ear-inner"></div></div>
+                <div class="teddy-ear right"><div class="teddy-ear-inner"></div></div>
+                <div class="teddy-eye left"></div>
+                <div class="teddy-eye right"></div>
+                <div class="teddy-snout">
+                    <div class="teddy-nose"></div>
+                    <div class="teddy-mouth"></div>
+                </div>
+            </div>
+            <div class="teddy-body">
+                <div class="teddy-belly"></div>
+                <div class="teddy-arm left"></div>
+                <div class="teddy-arm right"></div>
+                <div class="teddy-leg left"><div class="teddy-foot"></div></div>
+                <div class="teddy-leg right"><div class="teddy-foot"></div></div>
+            </div>
+            <div class="speech-bubble" id="teddySpeech">Hi beautiful! 🧸✨</div>
+        </div>
+        
+        <div class="cake-container" id="cake">
+            <div class="cake">
+                <div class="cake-base">
+                    <div class="frosting"></div>
+                </div>
+                <div class="cake-middle">
+                    <div class="frosting"></div>
+                </div>
+                <div class="cake-top">
+                    <div class="frosting"></div>
+                    <div class="candle">
+                        <div class="flame"></div>
+                    </div>
+                </div>
+                <div class="cake-cut"></div>
+            </div>
+            <button class="btn cut-btn" id="cutCakeBtn" onclick="cutCake()">🎂 Cut the Cake</button>
+        </div>
+        
+        <div class="btn-container" id="loveButtons">
+            <button class="btn btn-yes" onclick="answerYes()">Yes 💕</button>
+            <button class="btn btn-no" onclick="answerNo()">No 😢</button>
+        </div>
+    </div>
+
+    <!-- Scene 3: Quiz -->
+    <div id="quizScene" class="scene">
+        <div class="quiz-container">
+            <h2 class="quiz-title">Quiz of Heart 💝</h2>
+            <div id="quizContent">
+                <!-- Questions injected by JS -->
+            </div>
+            <div class="results-screen" id="quizResults">
+                <div class="score-display" id="scoreDisplay"></div>
+                <div class="answer-review" id="answerReview"></div>
+                <button class="quiz-btn" onclick="startMaze()" style="margin-top: 20px;">Continue to Challenge 🎮</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 4: Maze Game -->
+    <div id="mazeScene" class="scene">
+        <div class="maze-container" id="mazeContainer">
+            <h2 class="maze-title">Bhool Bhulaiyan Challenge 🌀</h2>
+            <div class="fail-counter">Attempts: <span id="failCount">0</span>/3</div>
+            <div class="maze-player" id="player"></div>
+            <div class="maze-gift" id="gift">🎁</div>
+            <div class="maze-comment" id="mazeComment">Let's see how you do! 😏</div>
+        </div>
+    </div>
+
+    <!-- Scene 5: Privilege Card -->
+    <div id="cardScene" class="scene">
+        <div class="wishes-container" id="wishesContainer"></div>
+        <div class="privilege-card">
+            <div class="card-stamp">OFFICIAL</div>
+            <h2 class="card-title">Official Birthday Privilege Card</h2>
+            <div class="card-content">
+                <p>This card certifies that the bearer has the absolute right to command the issuer (your loving teddy) to fulfill ANY wish, demand, or desire.</p>
+                <p style="margin-top: 15px; font-style: italic; color: #d63031;">Valid for: Unlimited use today<br>Redeemable: Immediately</p>
+            </div>
+            <button class="claim-btn" onclick="claimPrivilege()">Claim Now 🎁</button>
+        </div>
+    </div>
+
+    <script>
+        // Scene Management
+        let currentScene = 0;
+        const scenes = ['fireworksScene', 'teddyScene', 'quizScene', 'mazeScene', 'cardScene'];
+        
+        function showScene(index) {
+            document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+            document.getElementById(scenes[index]).classList.add('active');
+            currentScene = index;
+            
+            if (index === 1) initTeddyScene();
+            if (index === 2) initQuiz();
+            if (index === 3) initMaze();
+            if (index === 4) initCardScene();
+        }
+
+        // Fireworks Animation
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.alpha = 1;
+                this.friction = 0.99;
+                this.gravity = 0.05;
+            }
+            
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            
+            update() {
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.velocity.y += this.gravity;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.01;
+            }
+        }
+
+        class Firework {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.velocity = {x: 0, y: Math.random() * -3 - 2};
+                this.particles = [];
+                this.lifespan = 100;
+                this.hasExploded = false;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            
+            explode() {
+                for (let i = 0; i < 50; i++) {
+                    this.particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
+            
+            update() {
+                this.lifespan--;
+                
+                if (this.lifespan <= 0 && !this.hasExploded) {
+                    this.explode();
+                    this.hasExploded = true;
+                } else if (this.lifespan > 0) {
+                    this.y += this.velocity.y;
+                }
+                
+                this.particles.forEach((p, i) => {
+                    p.update();
+                    p.draw();
+                    if (p.alpha <= 0) this.particles.splice(i, 1);
+                });
+            }
+        }
+
+        let fireworks = [];
+        let fireworkInterval;
+        let animationId;
+
+        function startFireworks() {
+            fireworkInterval = setInterval(() => {
+                const x = Math.random() * canvas.width;
+                const color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                fireworks.push(new Firework(x, canvas.height, color));
+            }, 300);
+            
+            function animate() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                fireworks.forEach((f, i) => {
+                    f.update();
+                    if (!f.hasExploded || f.particles.length > 0) f.draw();
+                    else fireworks.splice(i, 1);
+                });
+                
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+            
+            // Transition after 4 seconds
+            setTimeout(() => {
+                clearInterval(fireworkInterval);
+                cancelAnimationFrame(animationId);
+                showScene(1);
+            }, 4000);
+        }
+
+        // Teddy Scene Logic
+        let teddyState = 'intro';
+        
+        function initTeddyScene() {
+            const speech = document.getElementById('teddySpeech');
+            const cutBtn = document.getElementById('cutCakeBtn');
+            
+            // Initial greeting sequence
+            setTimeout(() => {
+                speech.textContent = "Hi my love! 🧸💖 Did you know you're the most beautiful person in the world?";
+                speech.classList.add('show');
+            }, 500);
+            
+            setTimeout(() => {
+                speech.textContent = "Your smile lights up my life brighter than any star! ✨";
+            }, 3000);
+            
+            setTimeout(() => {
+                speech.textContent = "I made this cake just for you... but first, I need to know something important! 🎂";
+                cutBtn.classList.add('show');
+            }, 5500);
+        }
+        
+        function cutCake() {
+            document.getElementById('cake').classList.add('cut');
+            document.getElementById('cutCakeBtn').classList.remove('show');
+            
+            const speech = document.getElementById('teddySpeech');
+            speech.textContent = "Perfect! Now tell me... Do you love me? 🥺💕";
+            
+            setTimeout(() => {
+                document.getElementById('loveButtons').classList.add('show');
+            }, 1000);
+        }
+        
+        let noClickCount = 0;
+        
+        function answerNo() {
+            noClickCount++;
+            const teddy = document.getElementById('teddy');
+            const speech = document.getElementById('teddySpeech');
+            
+            teddy.classList.add('angry', 'sitting');
+            speech.textContent = "Nooo... you DO love me! I know you do! Don't lie to your teddy! 😤💔";
+            
+            // Shake effect
+            teddy.style.animation = 'none';
+            setTimeout(() => {
+                teddy.style.animation = 'bounceIn 0.5s';
+            }, 10);
+            
+            setTimeout(() => {
+                teddy.classList.remove('angry', 'sitting');
+                speech.textContent = "Come on... say yes? For me? 🥺👉👈";
+            }, 2000);
+        }
+        
+        function answerYes() {
+            const speech = document.getElementById('teddySpeech');
+            speech.textContent = "YAY! I knew it! I love you too! 💕🎉 Let's play a game!";
+            
+            // Create heart explosion
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => createHeart(), i * 100);
+            }
+            
+            setTimeout(() => showScene(2), 2000);
+        }
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.bottom = '0';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+        // Quiz Logic
+        const quizQuestions = [
+            {
+                question: "What is my favorite color?",
+                options: ["Blue", "Black", "Red", "Green"],
+                correct: 1
+            },
+            {
+                question: "What is my favorite car brand?",
+                options: ["Mercedes", "Audi", "BMW", "Porsche"],
+                correct: 2
+            },
+            {
+                question: "What is my favorite car from this brand?",
+                options: ["BMW X5", "BMW M3", "BMW M4 Competition", "BMW i8"],
+                correct: 2
+            },
+            {
+                question: "What food do I love the most?",
+                options: ["Pizza", "Biryani", "Sushi", "Burgers"],
+                correct: 1
+            },
+            {
+                question: "Which movie genre do I prefer?",
+                options: ["Action", "Romance", "Horror", "Comedy"],
+                correct: 0
+            },
+            {
+                question: "What is my favorite season?",
+                options: ["Summer", "Winter", "Monsoon", "Spring"],
+                correct: 1
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let userAnswers = [];
+        
+        function initQuiz() {
+            const container = document.getElementById('quizContent');
+            container.innerHTML = '';
+            
+            quizQuestions.forEach((q, i) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question' + (i === 0 ? ' active' : '');
+                qDiv.id = `q${i}`;
+                
+                qDiv.innerHTML = `
+                    <div class="question-text">${i + 1}. ${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((opt, j) => `
+                            <div class="option" onclick="selectOption(${i}, ${j})">${opt}</div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+            
+            const nav = document.createElement('div');
+            nav.className = 'quiz-nav';
+            nav.innerHTML = `
+                <button class="quiz-btn" id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
+                <button class="quiz-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+            `;
+            container.appendChild(nav);
+        }
+        
+        function selectOption(qIdx, optIdx) {
+            const qDiv = document.getElementById(`q${qIdx}`);
+            qDiv.querySelectorAll('.option').forEach((o, i) => {
+                o.classList.toggle('selected', i === optIdx);
+            });
+            userAnswers[qIdx] = optIdx;
+        }
+        
+        function nextQuestion() {
+            if (userAnswers[currentQuestion] === undefined) {
+                alert('Please select an answer! 💝');
+                return;
+            }
+            
+            document.getElementById(`q${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            
+            if (currentQuestion >= quizQuestions.length) {
+                showResults();
+            } else {
+                document.getElementById(`q${currentQuestion}`).classList.add('active');
+                document.getElementById('prevBtn').disabled = false;
+                if (currentQuestion === quizQuestions.length - 1) {
+                    document.getElementById('nextBtn').textContent = 'See Results 💕';
+                }
+            }
+        }
+        
+        function prevQuestion() {
+            document.getElementById(`q${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`q${currentQuestion}`).classList.add('active');
+            document.getElementById('nextBtn').textContent = 'Next';
+            if (currentQuestion === 0) document.getElementById('prevBtn').disabled = true;
+        }
+        
+        function showResults() {
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('quizResults').classList.add('show');
+            
+            let correct = 0;
+            const review = document.getElementById('answerReview');
+            review.innerHTML = '<h3 style="margin-bottom: 15px;">Your Answers:</h3>';
+            
+            quizQuestions.forEach((q, i) => {
+                const isCorrect = userAnswers[i] === q.correct;
+                if (isCorrect) correct++;
+                
+                const div = document.createElement('div');
+                div.className = `answer-item ${isCorrect ? 'correct' : 'wrong'}`;
+                div.innerHTML = `
+                    <strong>Q${i + 1}:</strong> ${q.question}<br>
+                    Your answer: ${q.options[userAnswers[i]]} 
+                    ${isCorrect ? '✅' : `❌ (Correct: ${q.options[q.correct]})`}
+                `;
+                review.appendChild(div);
+            });
+            
+            const percentage = Math.round((correct / quizQuestions.length) * 100);
+            document.getElementById('scoreDisplay').innerHTML = 
+                `${correct}/${quizQuestions.length}<br><span style="font-size: 1.5rem;">${percentage}%</span>`;
+        }
+
+        // Maze Game Logic
+        let failCount = 0;
+        let mazeAttempts = 0;
+        let playerPos = {x: 50, y: 50};
+        let giftPos = {x: 0, y: 0};
+        let walls = [];
+        let mazeActive = false;
+        
+        const taunts = [
+            "So slow? 🐢",
+            "You can do better than that! 💪",
+            "My grandma is faster! 👵",
+            "Are you even trying? 😏",
+            "Catch me if you can! 🏃‍♂️",
+            "Too easy for you? 😜",
+            "Almost... but not quite! 😅"
+        ];
+        
+        function initMaze() {
+            showScene(3);
+            const container = document.getElementById('mazeContainer');
+            const player = document.getElementById('player');
+            const gift = document.getElementById('gift');
+            
+            // Clear old walls
+            container.querySelectorAll('.maze-wall').forEach(w => w.remove());
+            walls = [];
+            
+            // Create impossible narrow maze walls
+            const containerRect = container.getBoundingClientRect();
+            const w = containerRect.width;
+            const h = containerRect.height;
+            
+            // Generate maze walls - extremely narrow paths
+            for (let i = 0; i < 15; i++) {
+                const wall = document.createElement('div');
+                wall.className = 'maze-wall';
+                const isHorizontal = Math.random() > 0.5;
+                
+                if (isHorizontal) {
+                    wall.style.width = (100 + Math.random() * 200) + 'px';
+                    wall.style.height = '8px';
+                    wall.style.left = Math.random() * (w - 200) + 'px';
+                    wall.style.top = Math.random() * (h - 50) + 'px';
+                } else {
+                    wall.style.width = '8px';
+                    wall.style.height = (100 + Math.random() * 200) + 'px';
+                    wall.style.left = Math.random() * (w - 50) + 'px';
+                    wall.style.top = Math.random() * (h - 200) + 'px';
+                }
+                
+                container.appendChild(wall);
+                walls.push({
+                    x: parseInt(wall.style.left),
+                    y: parseInt(wall.style.top),
+                    w: parseInt(wall.style.width),
+                    h: parseInt(wall.style.height)
+                });
+            }
+            
+            // Set positions
+            playerPos = {x: 30, y: 30};
+            giftPos = {x: w - 80, y: h - 80};
+            
+            player.style.left = playerPos.x + 'px';
+            player.style.top = playerPos.y + 'px';
+            gift.style.left = giftPos.x + 'px';
+            gift.style.top = giftPos.y + 'px';
+            
+            // Mouse tracking
+            mazeActive = true;
+            failCount = 0;
+            mazeAttempts = 0;
+            document.getElementById('failCount').textContent = failCount;
+            
+            container.onmousemove = handleMazeMove;
+            gift.onmouseenter = catchGift;
+        }
+        
+        function handleMazeMove(e) {
+            if (!mazeActive) return;
+            
+            const container = document.getElementById('mazeContainer');
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left - 15;
+            const y = e.clientY - rect.top - 15;
+            
+            // Check wall collisions (very strict)
+            for (let wall of walls) {
+                if (x + 30 > wall.x && x < wall.x + wall.w &&
+                    y + 30 > wall.y && y < wall.y + wall.h) {
+                    handleFail();
+                    return;
+                }
+            }
+            
+            // Update player
+            const player = document.getElementById('player');
+            player.style.left = x + 'px';
+            player.style.top = y + 'px';
+            playerPos = {x, y};
+            
+            // Teleport gift if getting close (evil mechanic)
+            const dist = Math.hypot(x - giftPos.x, y - giftPos.y);
+            if (dist < 150 && Math.random() > 0.7) {
+                teleportGift();
+            }
+        }
+        
+        function teleportGift() {
+            const container = document.getElementById('mazeContainer');
+            const rect = container.getBoundingClientRect();
+            giftPos = {
+                x: 50 + Math.random() * (rect.width - 150),
+                y: 50 + Math.random() * (rect.height - 150)
+            };
+            document.getElementById('gift').style.left = giftPos.x + 'px';
+            document.getElementById('gift').style.top = giftPos.y + 'px';
+            
+            showTaunt("Too slow! Try again! 🏃‍♂️💨");
+        }
+        
+        function handleFail() {
+            failCount++;
+            mazeAttempts++;
+            document.getElementById('failCount').textContent = failCount;
+            
+            // Reset position
+            playerPos = {x: 30, y: 30};
+            document.getElementById('player').style.left = '30px';
+            document.getElementById('player').style.top = '30px';
+            
+            showTaunt(taunts[Math.floor(Math.random() * taunts.length)]);
+            
+            // After 3 fails, make it easy
+            if (failCount >= 3) {
+                setTimeout(makeEasyMaze, 1000);
+            }
+        }
+        
+        function showTaunt(text) {
+            const comment = document.getElementById('mazeComment');
+            comment.textContent = text;
+            comment.classList.add('show');
+            setTimeout(() => comment.classList.remove('show'), 2000);
+        }
+        
+        function catchGift() {
+            if (!mazeActive) return;
+            showTaunt("Wait... how did you catch that?! 😲");
+            setTimeout(() => showScene(4), 1500);
+        }
+        
+        function makeEasyMaze() {
+            showTaunt("Okay okay... let me help you! 😤");
+            
+            // Remove all walls
+            document.querySelectorAll('.maze-wall').forEach(w => w.remove());
+            walls = [];
+            
+            // Auto move player to gift
+            const player = document.getElementById('player');
+            player.style.transition = 'all 2s ease-out';
+            player.style.left = giftPos.x + 'px';
+            player.style.top = giftPos.y + 'px';
+            
+            setTimeout(() => {
+                showTaunt("See? I got it for you! 🎁💖");
+                setTimeout(() => showScene(4), 1500);
+            }, 2000);
+        }
+
+        // Card Scene
+        const birthdayWishes = [
+            "Happy Birthday! 🎉",
+            "May all your dreams come true! ✨",
+            "You deserve the world! 🌍",
+            "Stay blessed and always smile! 😊",
+            "You're my everything! 💖",
+            "Forever yours! 💕",
+            "Best birthday ever! 🎂",
+            "Love you to the moon and back! 🌙"
+        ];
+        
+        function initCardScene() {
+            const container = document.getElementById('wishesContainer');
+            
+            // Create floating wishes
+            birthdayWishes.forEach((wish, i) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'floating-wish';
+                    div.textContent = wish;
+                    div.style.left = (10 + Math.random() * 80) + '%';
+                    div.style.animationDelay = Math.random() * 2 + 's';
+                    container.appendChild(div);
+                    
+                    setTimeout(() => div.remove(), 4000);
+                }, i * 600);
+            });
+            
+            // Keep creating wishes
+            setInterval(() => {
+                const div = document.createElement('div');
+                div.className = 'floating-wish';
+                div.textContent = birthdayWishes[Math.floor(Math.random() * birthdayWishes.length)];
+                div.style.left = (10 + Math.random() * 80) + '%';
+                container.appendChild(div);
+                setTimeout(() => div.remove(), 4000);
+            }, 2000);
+        }
+        
+        function claimPrivilege() {
+            const message = encodeURIComponent(
+                "🎂 Official Birthday Command Activated! 🎂\n\n" +
+                "My love, I've claimed my Birthday Privilege Card! 💝\n" +
+                "Here's my birthday wish/command for you:\n\n" +
+                "[Type your wish here...]\n\n" +
+                "You promised to do ANYTHING! 😈💕\n" +
+                "Love you! 💖"
+            );
+            
+            window.open(`https://wa.me/?text=${message}`, '_blank');
+        }
+
+        // Start
+        window.onload = () => {
+            setTimeout(startFireworks, 1000);
+        };
+        
+        window.onresize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+    </script>
+</body>
+</html>
